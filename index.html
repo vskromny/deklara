@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deklara — Krypto-Steuererklärung Schweiz in 10 Minuten</title>
+<meta name="description" content="Screenshots, PDFs und Wallet-Auszüge hochladen — Deklara erstellt dein fertiges Wertschriftenverzeichnis mit offiziellen ESTV-Kurswerten. Kein Tracking, kein Abo.">
+<link rel="canonical" href="https://deklara.ch/">
+<link rel="alternate" hreflang="de-CH" href="https://deklara.ch/">
+<link rel="alternate" hreflang="fr-CH" href="https://deklara.ch/fr/">
+<link rel="alternate" hreflang="x-default" href="https://deklara.ch/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Deklara — Krypto in der Steuererklärung. Erledigt in 10 Minuten.">
+<meta property="og:description" content="Belege hochladen, prüfen, einreichen: dein Wertschriftenverzeichnis mit offiziellen ESTV-Kurswerten — für alle 26 Kantone. Kein Abo, kein Tracking.">
+<meta property="og:url" content="https://deklara.ch/">
+<meta property="og:locale" content="de_CH">
+<meta name="twitter:card" content="summary">
+<!-- ANALYTICS: set data-domain to your real domain once registered (see README) -->
+<script defer data-domain="deklara.ch" src="https://plausible.io/js/script.js"></script>
+<script>window.plausible = window.plausible || function(){(window.plausible.q = window.plausible.q || []).push(arguments)}</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "Ist das Steuerberatung?", "acceptedAnswer": {"@type": "Answer", "text": "Nein. Deklara kompiliert deine Unterlagen in ein sauberes, deklarationsfertiges Dokument. Für individuelle Steuerfragen wende dich an eine Steuerberaterin oder deinen Kanton."}},
+    {"@type": "Question", "name": "Muss ich Kapitalgewinne versteuern?", "acceptedAnswer": {"@type": "Answer", "text": "Als Privatanleger sind Kursgewinne in der Schweiz grundsätzlich steuerfrei. Deklariert werden müssen dein Bestand per 31.12. (Vermögenssteuer) sowie Erträge aus Staking, Lending oder Mining (Einkommen)."}},
+    {"@type": "Question", "name": "Welche Kantone werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Alle 26. Das Wertschriftenverzeichnis wird im Format deines Kantons erstellt — von Zürich bis Genf."}},
+    {"@type": "Question", "name": "Ich habe meine Historie nicht vollständig. Geht das trotzdem?", "acceptedAnswer": {"@type": "Answer", "text": "Ja — genau dafür ist Deklara gebaut. Du brauchst keine lückenlose Transaktionshistorie, nur Belege für deine Bestände per 31.12. und deine Erträge."}},
+    {"@type": "Question", "name": "Ich habe frühere Jahre nie deklariert. Könnt ihr helfen?", "acceptedAnswer": {"@type": "Answer", "text": "Das ist geplant: Deklara kompiliert auch mehrere vergangene Steuerjahre als Grundlage für eine straflose Selbstanzeige (Nachdeklaration). Mit CARF melden Plattformen ab 2027 ohnehin an die Behörden — sauber nachdeklarieren lohnt sich jetzt."}}
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#101010;
+    --paper:#ffffff;
+    --field:#f4f4f1;
+    --red:#e3000f;
+    --grey:#6e6e6e;
+    --line:#101010;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+
+  /* ---------- top bar ---------- */
+  header{
+    border-bottom:2px solid var(--line);
+  }
+  .bar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 0;
+  }
+  .logo{
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:1.25rem;
+    letter-spacing:-0.02em;display:flex;align-items:center;gap:10px;
+  }
+  .cross{
+    width:20px;height:20px;background:var(--red);position:relative;flex:none;
+  }
+  .cross::before,.cross::after{
+    content:"";position:absolute;background:#fff;
+  }
+  .cross::before{width:12px;height:4px;left:4px;top:8px}
+  .cross::after{width:4px;height:12px;left:8px;top:4px}
+  .bar-right{display:flex;align-items:center;gap:18px}
+  .bar-note{
+    font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--grey);
+  }
+  .lang{
+    font-family:'IBM Plex Mono',monospace;font-size:0.75rem;
+  }
+  .lang a{color:var(--grey);text-decoration:none}
+  .lang a:hover{color:var(--red)}
+  .lang .active{color:var(--ink);font-weight:500}
+  @media(max-width:560px){.bar-note{display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{
+    display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;
+    padding:72px 0 80px;align-items:start;
+  }
+  @media(max-width:900px){.hero{grid-template-columns:1fr;gap:48px;padding:48px 0 64px}}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.06em;
+    text-transform:uppercase;color:var(--red);margin-bottom:20px;
+  }
+  h1{
+    font-family:'Archivo',sans-serif;font-weight:800;
+    font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.05;letter-spacing:-0.03em;
+    margin-bottom:22px;
+  }
+  h1 .u{box-shadow:inset 0 -0.18em 0 rgba(227,0,15,.25)}
+  .sub{
+    font-size:1.08rem;color:var(--ink);max-width:34rem;margin-bottom:14px;
+  }
+  .sub-quiet{font-size:0.95rem;color:var(--grey);max-width:34rem;margin-bottom:32px}
+
+  /* ---------- signup form ---------- */
+  .signup{max-width:34rem}
+  .signup form{display:flex;gap:0;border:2px solid var(--line)}
+  .signup input[type=email]{
+    flex:1;border:none;outline:none;padding:14px 16px;font:inherit;
+    background:var(--paper);min-width:0;
+  }
+  .signup input[type=email]:focus-visible{outline:3px solid var(--red);outline-offset:-3px}
+  .btn{
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:0.95rem;
+    background:var(--red);color:#fff;border:none;padding:14px 22px;cursor:pointer;
+    white-space:nowrap;
+  }
+  .btn:hover{background:#c4000d}
+  .btn:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+  .btn[disabled]{opacity:0.6;cursor:wait}
+  .form-note{
+    font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--grey);
+    margin-top:10px;
+  }
+  .form-extra{
+    display:flex;align-items:flex-start;gap:8px;margin-top:12px;
+    font-size:0.85rem;color:var(--grey);
+  }
+  .form-extra input{accent-color:var(--red);margin-top:3px}
+  .form-ok{
+    display:none;border:2px solid var(--line);background:var(--field);
+    padding:16px 18px;font-weight:600;
+  }
+  .form-ok span{color:var(--red)}
+  .form-err{
+    display:none;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;
+    color:var(--red);margin-top:10px;
+  }
+
+  /* ---------- hero form card (signature) ---------- */
+  .formcard{
+    border:2px solid var(--line);background:var(--paper);position:relative;
+    font-family:'IBM Plex Mono',monospace;font-size:0.82rem;
+  }
+  .fc-head{
+    display:flex;justify-content:space-between;align-items:center;
+    border-bottom:2px solid var(--line);padding:12px 16px;
+    background:var(--field);
+  }
+  .fc-title{font-weight:500;letter-spacing:0.04em;text-transform:uppercase;font-size:0.72rem}
+  .fc-form-no{color:var(--grey);font-size:0.72rem}
+  .fc-body{padding:8px 0}
+  .fc-row{
+    display:grid;grid-template-columns:2.2fr 1.2fr 1.4fr;gap:8px;
+    padding:10px 16px;border-bottom:1px solid #dcdcd7;align-items:baseline;
+  }
+  .fc-row:last-child{border-bottom:none}
+  .fc-row.head{color:var(--grey);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.05em}
+  .fc-val{text-align:right}
+  .fc-chf{text-align:right;font-weight:500}
+  .fc-row.total{
+    border-top:2px solid var(--line);font-weight:500;background:var(--field);
+  }
+  .fc-row .pending{color:#bdbdb8}
+  .stamp{
+    position:absolute;right:14px;bottom:52px;
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:0.85rem;
+    color:var(--red);border:3px solid var(--red);padding:5px 12px;
+    letter-spacing:0.12em;transform:rotate(-8deg);opacity:0;
+    text-transform:uppercase;
+  }
+  .stamp.show{opacity:0.9;transition:opacity .3s ease}
+  .fc-foot{
+    border-top:2px solid var(--line);padding:10px 16px;color:var(--grey);
+    font-size:0.68rem;display:flex;justify-content:space-between;
+  }
+  @media(prefers-reduced-motion:reduce){
+    .stamp{opacity:0.9}
+  }
+
+  /* ---------- sections ---------- */
+  section{border-top:2px solid var(--line);padding:72px 0}
+  .sec-label{
+    font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.06em;
+    text-transform:uppercase;color:var(--red);margin-bottom:18px;
+  }
+  h2{
+    font-family:'Archivo',sans-serif;font-weight:800;letter-spacing:-0.02em;
+    font-size:clamp(1.6rem,3.4vw,2.2rem);line-height:1.15;margin-bottom:40px;
+    max-width:36rem;
+  }
+  .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
+  @media(max-width:820px){.cols{grid-template-columns:1fr;gap:32px}}
+  .col h3{
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:1.05rem;
+    margin-bottom:10px;
+  }
+  .col p{color:var(--grey);font-size:0.95rem}
+  .col .k{
+    font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--ink);
+    display:inline-block;border:1.5px solid var(--line);padding:3px 8px;margin-bottom:14px;
+  }
+
+  /* CARF band */
+  .band{
+    background:var(--ink);color:#fff;border-top:2px solid var(--line);
+  }
+  .band .wrap{padding-top:56px;padding-bottom:56px}
+  .band h2{color:#fff;margin-bottom:16px;max-width:44rem}
+  .band p{color:#c9c9c4;max-width:44rem}
+  .band .sec-label{color:var(--red)}
+
+  /* pricing */
+  .price-card{
+    border:2px solid var(--line);max-width:34rem;
+  }
+  .price-top{
+    padding:28px;border-bottom:2px solid var(--line);
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+  }
+  .price-num{
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:2.6rem;letter-spacing:-0.03em;
+  }
+  .price-num .old{
+    font-size:1.1rem;color:var(--grey);text-decoration:line-through;
+    font-weight:600;margin-left:10px;
+  }
+  .price-per{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--grey)}
+  .price-list{padding:24px 28px;border-bottom:2px solid var(--line)}
+  .price-list li{
+    list-style:none;padding-left:26px;position:relative;margin-bottom:10px;
+    font-size:0.95rem;
+  }
+  .price-list li::before{
+    content:"";position:absolute;left:0;top:7px;width:12px;height:12px;background:var(--red);
+  }
+  .price-cta{padding:24px 28px}
+  .btn-wide{width:100%;padding:16px}
+
+  /* ---------- tier modal (price test) ---------- */
+  .modal-overlay{
+    display:none;position:fixed;inset:0;background:rgba(16,16,16,.55);
+    z-index:50;align-items:center;justify-content:center;padding:24px;
+  }
+  .modal-overlay.open{display:flex}
+  .modal{
+    background:var(--paper);border:2px solid var(--line);max-width:30rem;width:100%;
+    max-height:90vh;overflow-y:auto;
+  }
+  .modal-head{
+    display:flex;justify-content:space-between;align-items:center;
+    border-bottom:2px solid var(--line);padding:16px 20px;background:var(--field);
+  }
+  .modal-head h3{font-family:'Archivo',sans-serif;font-weight:800;font-size:1rem}
+  .modal-close{
+    background:none;border:none;font-size:1.4rem;cursor:pointer;line-height:1;
+    color:var(--grey);padding:4px;
+  }
+  .modal-close:hover{color:var(--red)}
+  .modal-body{padding:20px}
+  .modal-body>p{font-size:0.9rem;color:var(--grey);margin-bottom:16px}
+  .tier{
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+    width:100%;text-align:left;background:var(--paper);border:2px solid var(--line);
+    padding:14px 16px;margin-bottom:10px;cursor:pointer;font:inherit;
+  }
+  .tier:hover{border-color:var(--red)}
+  .tier:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+  .tier b{font-family:'Archivo',sans-serif;font-weight:700;display:block}
+  .tier small{color:var(--grey);font-size:0.8rem;display:block}
+  .tier .t-price{
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:1.15rem;white-space:nowrap;
+  }
+
+  /* FAQ */
+  details{border-bottom:1px solid #dcdcd7;padding:18px 0}
+  details:first-of-type{border-top:2px solid var(--line)}
+  summary{
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;
+    list-style:none;display:flex;justify-content:space-between;gap:16px;
+  }
+  summary::after{content:"+";color:var(--red);font-weight:800;flex:none}
+  details[open] summary::after{content:"−"}
+  details p{color:var(--grey);margin-top:10px;max-width:44rem;font-size:0.95rem}
+
+  footer{
+    border-top:2px solid var(--line);padding:40px 0 56px;
+    font-size:0.8rem;color:var(--grey);
+  }
+  footer p{max-width:52rem;margin-bottom:8px}
+  .foot-links{
+    font-family:'IBM Plex Mono',monospace;font-size:0.75rem;margin-top:16px;
+  }
+  .foot-links a{color:var(--grey)}
+  .foot-links a:hover{color:var(--red)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <div class="logo"><span class="cross" aria-hidden="true"></span>Deklara</div>
+    <div class="bar-right">
+      <div class="bar-note">Steuerjahr 2026 · Alle 26 Kantone</div>
+      <nav class="lang" aria-label="Sprache"><span class="active">DE</span> · <a href="/fr/" lang="fr">FR</a></nav>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <div>
+      <p class="eyebrow">Krypto-Steuererklärung · Schweiz</p>
+      <h1>Krypto in der Steuererklärung. <span class="u">Erledigt in 10 Minuten.</span></h1>
+      <p class="sub">Lade Screenshots, PDFs und Wallet-Auszüge hoch — Deklara erkennt deine Bestände, holt die offiziellen ESTV-Kurswerte per 31.12. und erstellt dein fertiges Wertschriftenverzeichnis für deinen Kanton.</p>
+      <p class="sub-quiet">Kein Portfolio-Tracking. Kein Abo für Trader. Nur deine Deklaration — einmal pro Jahr.</p>
+
+      <div class="signup" id="signup">
+        <form id="waitlist" novalidate>
+          <label for="email" style="position:absolute;left:-9999px">E-Mail</label>
+          <input id="email" type="email" name="email" placeholder="deine@email.ch" required autocomplete="email">
+          <input type="hidden" name="tier" id="tier-field" value="">
+          <input type="hidden" name="lang" value="de">
+          <button class="btn" type="submit" id="submit-btn">Frühzugang sichern</button>
+        </form>
+        <label class="form-extra">
+          <input type="checkbox" id="cleanup" name="cleanup" value="ja" form="waitlist">
+          <span>Ich möchte auch frühere Steuerjahre nachdeklarieren (Selbstanzeige)</span>
+        </label>
+        <div class="form-ok" id="form-ok" role="status">Danke! Du stehst auf der Liste. <span>Early-Bird: CHF 39 statt CHF 79.</span></div>
+        <p class="form-err" id="form-err">Das hat nicht geklappt — bitte versuch es nochmals.</p>
+        <p class="form-note">Early-Bird-Preis CHF 39 statt CHF 79 · Kein Spam, nur der Launch.</p>
+      </div>
+    </div>
+
+    <div class="formcard" aria-label="Beispiel eines automatisch erstellten Wertschriftenverzeichnisses">
+      <div class="fc-head">
+        <span class="fc-title">Wertschriftenverzeichnis</span>
+        <span class="fc-form-no">Formular 101.05</span>
+      </div>
+      <div class="fc-body">
+        <div class="fc-row head"><span>Vermögenswert</span><span class="fc-val">Bestand</span><span class="fc-chf">Steuerwert 31.12.</span></div>
+        <div class="fc-row" data-chf="35'412"><span>Bitcoin (BTC)</span><span class="fc-val">0.4200</span><span class="fc-chf pending">—</span></div>
+        <div class="fc-row" data-chf="9'873"><span>Ethereum (ETH)</span><span class="fc-val">3.1000</span><span class="fc-chf pending">—</span></div>
+        <div class="fc-row" data-chf="2'145"><span>Solana (SOL)</span><span class="fc-val">14.500</span><span class="fc-chf pending">—</span></div>
+        <div class="fc-row" data-chf="812"><span>Staking-Ertrag (Einkommen)</span><span class="fc-val">ETH</span><span class="fc-chf pending">—</span></div>
+        <div class="fc-row total" data-chf="48'242"><span>Total steuerbares Vermögen</span><span class="fc-val"></span><span class="fc-chf pending">—</span></div>
+      </div>
+      <span class="stamp" id="stamp">Bereit zum Einreichen</span>
+      <div class="fc-foot"><span>Quelle: 7 Screenshots, 2 PDFs, 1 CSV</span><span>ESTV-Kurse ✓</span></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <p class="sec-label">Das Problem</p>
+      <h2>12 Screenshots, 4 Wallets, 1 Formular — und niemand hilft dir.</h2>
+      <div class="cols">
+        <div class="col">
+          <span class="k">Chaos</span>
+          <h3>Deine Belege liegen überall</h3>
+          <p>Exchange-PDFs, Wallet-Screenshots, Notizen in der Handy-App. Bestehende Tools verlangen API-Keys und lückenlose Transaktionshistorien — die du nicht hast.</p>
+        </div>
+        <div class="col">
+          <span class="k">Kurswerte</span>
+          <h3>ESTV-Werte manuell suchen</h3>
+          <p>Jeder Coin braucht den offiziellen Steuerwert per 31. Dezember. Für exotische Token musst du selbst einen belegbaren Kurs finden und dokumentieren.</p>
+        </div>
+        <div class="col">
+          <span class="k">Einkommen</span>
+          <h3>Staking zählt als Einkommen</h3>
+          <p>Staking- und Lending-Erträge gehören nicht ins Vermögen, sondern ins Einkommen — zum Wert am Tag des Zuflusses. Das übersehen die meisten.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="sec-label">So funktioniert's</p>
+      <h2>Hochladen. Prüfen. Einreichen.</h2>
+      <div class="cols">
+        <div class="col">
+          <span class="k">Schritt 1</span>
+          <h3>Alles hochladen</h3>
+          <p>PDF, Screenshot, CSV, sogar Notizen. Egal wie unordentlich — Deklara liest es und fragt nach, wenn etwas fehlt.</p>
+        </div>
+        <div class="col">
+          <span class="k">Schritt 2</span>
+          <h3>KI kompiliert</h3>
+          <p>Bestände werden erkannt, Staking-Erträge getrennt, offizielle ESTV-Kurswerte per 31.12. automatisch zugeordnet.</p>
+        </div>
+        <div class="col">
+          <span class="k">Schritt 3</span>
+          <h3>Kantonsgerechtes PDF</h3>
+          <p>Du erhältst ein fertiges Wertschriftenverzeichnis im Format deines Kantons — bereit zum Anhängen an die Steuererklärung.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="band">
+    <div class="wrap">
+      <p class="sec-label">Ab 2027</p>
+      <h2>Deine Börse meldet bald automatisch an die Steuerbehörden.</h2>
+      <p>Mit dem Crypto-Asset Reporting Framework (CARF) übermitteln Krypto-Plattformen ab 2027 Daten über Schweizer Nutzer an die Behörden. Wer heute sauber deklariert, vermeidet morgen Nachsteuern und Bussen.</p>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <p class="sec-label">Preis</p>
+      <h2>Ein Preis. Ein Steuerjahr. Kein Abo.</h2>
+      <div class="price-card">
+        <div class="price-top">
+          <div class="price-num">CHF 39<span class="old">CHF 79</span></div>
+          <div class="price-per">pro Steuerjahr · Early-Bird</div>
+        </div>
+        <ul class="price-list">
+          <li>Unbegrenzte Uploads (PDF, Screenshot, CSV, Text)</li>
+          <li>Offizielle ESTV-Kurswerte per 31.12. automatisch</li>
+          <li>Staking- &amp; Lending-Erträge als Einkommen ausgewiesen</li>
+          <li>Wertschriftenverzeichnis im Format deines Kantons</li>
+          <li>Daten nach Export löschbar — kein Tracking übers Jahr</li>
+        </ul>
+        <div class="price-cta">
+          <button class="btn btn-wide" id="preorder">Early-Bird sichern — CHF 39</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="sec-label">Fragen</p>
+      <h2>Kurz beantwortet.</h2>
+      <details>
+        <summary>Ist das Steuerberatung?</summary>
+        <p>Nein. Deklara kompiliert deine Unterlagen in ein sauberes, deklarationsfertiges Dokument. Für individuelle Steuerfragen wende dich an eine Steuerberaterin oder deinen Kanton.</p>
+      </details>
+      <details>
+        <summary>Muss ich Kapitalgewinne versteuern?</summary>
+        <p>Als Privatanleger sind Kursgewinne in der Schweiz grundsätzlich steuerfrei. Deklariert werden müssen dein Bestand per 31.12. (Vermögenssteuer) sowie Erträge aus Staking, Lending oder Mining (Einkommen).</p>
+      </details>
+      <details>
+        <summary>Welche Kantone werden unterstützt?</summary>
+        <p>Alle 26. Das Wertschriftenverzeichnis wird im Format deines Kantons erstellt — von Zürich bis Genf.</p>
+      </details>
+      <details>
+        <summary>Was passiert mit meinen Daten?</summary>
+        <p>Deine Unterlagen werden ausschliesslich für die Erstellung deines Dokuments verwendet und können nach dem Export vollständig gelöscht werden. Hosting in der Schweiz ist geplant.</p>
+      </details>
+      <details>
+        <summary>Ich habe meine Historie nicht vollständig. Geht das trotzdem?</summary>
+        <p>Ja — genau dafür ist Deklara gebaut. Du brauchst keine lückenlose Transaktionshistorie, nur Belege für deine Bestände per 31.12. und deine Erträge.</p>
+      </details>
+      <details>
+        <summary>Ich habe frühere Jahre nie deklariert. Könnt ihr helfen?</summary>
+        <p>Das ist geplant: Deklara kompiliert auch mehrere vergangene Steuerjahre als Grundlage für eine straflose Selbstanzeige (Nachdeklaration). Kreuze beim Eintragen einfach die Option an — du erfährst als Erste:r, wenn es verfügbar ist.</p>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Hinweis:</strong> Deklara befindet sich in Entwicklung. Diese Seite dient der Interessensbekundung; der Early-Bird-Preis wird erst bei Launch fällig. Deklara erbringt keine Steuer- oder Rechtsberatung.</p>
+    <p>© 2026 Deklara · Schweiz</p>
+    <p class="foot-links"><a href="/impressum.html">Impressum</a> · <a href="/datenschutz.html">Datenschutz</a></p>
+  </div>
+</footer>
+
+<!-- Tier-choice modal: price test 39/89/149 (validation §4) -->
+<div class="modal-overlay" id="tier-modal" role="dialog" aria-modal="true" aria-labelledby="tier-title">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="tier-title">Was passt zu dir?</h3>
+      <button class="modal-close" id="tier-close" aria-label="Schliessen">×</button>
+    </div>
+    <div class="modal-body">
+      <p>Wähle unverbindlich — so wissen wir, was wir zuerst bauen. Bezahlt wird erst beim Launch.</p>
+      <button class="tier" data-tier="basic">
+        <span><b>Basic</b><small>Bestände + Staking · bis 3 Wallets/Börsen</small></span>
+        <span class="t-price">CHF 39</span>
+      </button>
+      <button class="tier" data-tier="plus">
+        <span><b>Plus</b><small>DeFi, NFTs · unbegrenzte Quellen</small></span>
+        <span class="t-price">CHF 89</span>
+      </button>
+      <button class="tier" data-tier="pro">
+        <span><b>Pro</b><small>+ Einschätzung Gewerbsmässigkeit (Safe Harbour)</small></span>
+        <span class="t-price">CHF 149</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // =====================================================================
+  // CONFIG — set before publishing (see README.md)
+  // 1) FORM_ENDPOINT: your real Formspree/Tally endpoint.
+  //    While it still contains "DEIN_FORM_ID", the page runs in fake-door
+  //    mode: it shows the confirmation locally and only fires analytics.
+  // 2) Plausible: set data-domain in <head> to your registered domain.
+  // =====================================================================
+  const FORM_ENDPOINT = 'https://formspree.io/f/DEIN_FORM_ID';
+  const FAKE_DOOR = FORM_ENDPOINT.includes('DEIN_FORM_ID');
+
+  // --- Signature animation: form fills itself ---
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const rows = document.querySelectorAll('.fc-row[data-chf]');
+  const stamp = document.getElementById('stamp');
+  function fillRow(i){
+    if(i >= rows.length){ stamp.classList.add('show'); return; }
+    const cell = rows[i].querySelector('.fc-chf');
+    cell.classList.remove('pending');
+    cell.textContent = rows[i].dataset.chf;
+    setTimeout(()=>fillRow(i+1), 420);
+  }
+  if(prefersReduced){
+    rows.forEach(r=>{
+      const c=r.querySelector('.fc-chf');
+      c.classList.remove('pending'); c.textContent=r.dataset.chf;
+    });
+    stamp.classList.add('show');
+  } else {
+    setTimeout(()=>fillRow(0), 700);
+  }
+
+  // --- Waitlist form ---
+  const form = document.getElementById('waitlist');
+  const okBox = document.getElementById('form-ok');
+  const errBox = document.getElementById('form-err');
+  const submitBtn = document.getElementById('submit-btn');
+
+  function showSuccess(){
+    form.style.display = 'none';
+    document.querySelector('.form-extra').style.display = 'none';
+    errBox.style.display = 'none';
+    okBox.style.display = 'block';
+  }
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    const email = document.getElementById('email');
+    if(!email.checkValidity()){ email.reportValidity(); return; }
+    const cleanup = document.getElementById('cleanup').checked;
+    const tier = document.getElementById('tier-field').value || 'none';
+    plausible('Signup', {props:{tier: tier, cleanup: cleanup ? 'ja' : 'nein', lang: 'de'}});
+
+    if(FAKE_DOOR){ showSuccess(); return; }
+
+    submitBtn.disabled = true;
+    try{
+      const res = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: {'Accept': 'application/json'},
+        body: new FormData(form)
+      });
+      if(res.ok){ showSuccess(); }
+      else{ errBox.style.display = 'block'; }
+    }catch(err){
+      errBox.style.display = 'block';
+    }finally{
+      submitBtn.disabled = false;
+    }
+  });
+
+  // --- Pre-order click = strongest intent signal → tier price test ---
+  const modal = document.getElementById('tier-modal');
+  document.getElementById('preorder').addEventListener('click', function(){
+    plausible('PreorderClick');
+    modal.classList.add('open');
+    modal.querySelector('.tier').focus();
+  });
+  function closeModal(){ modal.classList.remove('open'); }
+  document.getElementById('tier-close').addEventListener('click', closeModal);
+  modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+
+  document.querySelectorAll('.tier').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      const tier = this.dataset.tier;
+      document.getElementById('tier-field').value = tier;
+      plausible('TierChoice', {props:{tier: tier}});
+      closeModal();
+      document.getElementById('signup').scrollIntoView({behavior:'smooth'});
+      setTimeout(()=>document.getElementById('email').focus(), 400);
+    });
+  });
+</script>
+</body>
+</html>
