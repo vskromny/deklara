@@ -92,9 +92,13 @@
   /* ---------- hero ---------- */
   .hero{
     display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;
-    padding:72px 0 80px;align-items:start;
+    /* longhand: .hero shares an element with .wrap, and the padding shorthand
+       would override .wrap's horizontal padding and push content to the edges */
+    padding-top:72px;padding-bottom:80px;align-items:start;
   }
-  @media(max-width:900px){.hero{grid-template-columns:1fr;gap:48px;padding:48px 0 64px}}
+  @media(max-width:900px){
+    .hero{grid-template-columns:1fr;gap:48px;padding-top:48px;padding-bottom:64px}
+  }
   .eyebrow{
     font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.06em;
     text-transform:uppercase;color:var(--red);margin-bottom:20px;
@@ -301,6 +305,52 @@
   }
   .foot-links a{color:var(--grey)}
   .foot-links a:hover{color:var(--red)}
+
+  /* ---------- mobile ---------- */
+  @media(max-width:620px){
+    .wrap{padding:0 18px}
+    section{padding:48px 0}
+    .band .wrap{padding-top:40px;padding-bottom:40px}
+    .hero{padding-top:32px;padding-bottom:48px;gap:36px}
+
+    h1{
+      font-size:clamp(1.85rem,7.6vw,2.6rem);letter-spacing:-0.02em;
+      margin-bottom:18px;text-wrap:balance;
+    }
+    h2{margin-bottom:28px;text-wrap:balance}
+    h1,h2{overflow-wrap:break-word}
+    .eyebrow{margin-bottom:14px}
+    .sub{font-size:1rem}
+    .sub-quiet{margin-bottom:26px}
+
+    /* stack the email capture — side by side squeezes the input to nothing */
+    .signup form{flex-direction:column;gap:10px;border:none}
+    .signup input[type=email]{border:2px solid var(--line);padding:15px 16px}
+    .signup .btn{width:100%;padding:16px}
+    .form-extra{font-size:0.9rem}
+    .form-extra input{width:18px;height:18px;margin-top:2px;flex:none}
+
+    /* compact the Wertschriftenverzeichnis card so the columns stop colliding */
+    .formcard{font-size:0.74rem}
+    .fc-row{grid-template-columns:1.8fr 1fr 1.2fr;gap:6px;padding:9px 12px}
+    .fc-row.head{font-size:0.62rem}
+    .fc-head,.fc-foot{padding:10px 12px}
+    .stamp{right:10px;bottom:46px;font-size:0.75rem;padding:4px 10px}
+
+    /* pricing */
+    .price-top{padding:22px 20px}
+    .price-list,.price-cta{padding-left:20px;padding-right:20px}
+    .price-num{font-size:2.2rem}
+
+    /* tap targets */
+    .modal-close{
+      min-width:44px;min-height:44px;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .lang a,.lang .active{display:inline-block;padding:6px 2px}
+    summary{padding:4px 0}
+    .modal-overlay{padding:14px}
+  }
 </style>
 </head>
 <body>
