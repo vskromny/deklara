@@ -2,21 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://deklara.ch/</loc>
-    <xhtml:link rel="alternate" hreflang="de-CH" href="https://deklara.ch/"/>
-    <xhtml:link rel="alternate" hreflang="fr-CH" href="https://deklara.ch/fr/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://deklara.ch/en/"/>
+    <loc>https://deklar.ch/</loc>
+    <xhtml:link rel="alternate" hreflang="de-CH" href="https://deklar.ch/"/>
+    <xhtml:link rel="alternate" hreflang="fr-CH" href="https://deklar.ch/fr/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://deklar.ch/en/"/>
   </url>
   <url>
-    <loc>https://deklara.ch/fr/</loc>
-    <xhtml:link rel="alternate" hreflang="de-CH" href="https://deklara.ch/"/>
-    <xhtml:link rel="alternate" hreflang="fr-CH" href="https://deklara.ch/fr/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://deklara.ch/en/"/>
+    <loc>https://deklar.ch/fr/</loc>
+    <xhtml:link rel="alternate" hreflang="de-CH" href="https://deklar.ch/"/>
+    <xhtml:link rel="alternate" hreflang="fr-CH" href="https://deklar.ch/fr/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://deklar.ch/en/"/>
   </url>
   <url>
-    <loc>https://deklara.ch/en/</loc>
-    <xhtml:link rel="alternate" hreflang="de-CH" href="https://deklara.ch/"/>
-    <xhtml:link rel="alternate" hreflang="fr-CH" href="https://deklara.ch/fr/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://deklara.ch/en/"/>
+    <loc>https://deklar.ch/en/</loc>
+    <xhtml:link rel="alternate" hreflang="de-CH" href="https://deklar.ch/"/>
+    <xhtml:link rel="alternate" hreflang="fr-CH" href="https://deklar.ch/fr/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://deklar.ch/en/"/>
   </url>
 </urlset>
