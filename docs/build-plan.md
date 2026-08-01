@@ -188,11 +188,13 @@ captured as described, retention enforced nightly.
 
 ## Phase 8 — end-to-end
 
-- [ ] **BLOCKED (phase 5)** Real submit from a phone on cellular lands in the DB
-      — `api.kryptodeklara.ch` does not resolve until the tunnel exists
-- [ ] **NEEDS YOU** Reboot the Mac mini, confirm both services return. Not done
-      autonomously: rebooting your always-on machine is your call, and the
-      LaunchAgent only restarts once you log back in
+- [x] Real submit from a browser on the **live public site** lands in the DB —
+      full funnel (Pageview → PreorderClick → TierChoice → Signup) captured
+      with UTM attribution, lead stored with tier/cleanup/lang
+- [x] Test rows cleared afterwards so the dashboard starts from zero
+- [ ] **NEEDS YOU** Reboot the Mac mini, confirm all three services return.
+      Not done autonomously: rebooting your always-on machine is your call, and
+      the LaunchAgents only restart once you log back in
 - [x] Restore a backup into a scratch DB and confirm it opens — verified:
       `integrity_check` ok, all 5 tables present, row counts intact
 - [x] Note the known gap: submissions during downtime are lost (accepted risk
