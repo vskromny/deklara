@@ -53,11 +53,12 @@ returns 204 and the row is in SQLite.
 
 ## Phase 2 — hardening
 
-- [ ] CORS allowlist (kryptodeklara.ch + localhost only)
-- [ ] Rate limit per ip_hash (e.g. 10 submits/hour, 300 events/hour)
-- [ ] Honeypot field + min-time-on-page check for spam
-- [ ] Payload size cap, strict JSON parse, reject unknown project keys
-- [ ] Email format + MX-ish sanity check, dedupe on (project, email)
+- [x] CORS allowlist (kryptodeklara.ch + localhost only)
+- [x] Rate limit per ip_hash (e.g. 10 submits/hour, 300 events/hour)
+- [x] Honeypot field + min-time-on-page check for spam
+- [x] Payload size cap, strict JSON parse, reject unknown project keys
+- [x] Email format + MX-ish sanity check, dedupe on (project, email)
+- [x] 16 tests covering all of the above (`npm test`)
 
 **Accept:** 11th submit in an hour returns 429; a submit from an unlisted
 origin is rejected; duplicate email does not create a second row.

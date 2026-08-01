@@ -10,6 +10,13 @@ import {
   sendNoContent,
 } from './http.js';
 import { clientIp, visitorHash } from './visitor.js';
+import { checkRate } from './ratelimit.js';
+import {
+  domainAcceptsMail,
+  submittedTooFast,
+  suggestDomainFix,
+  trippedHoneypot,
+} from './spam.js';
 import {
   cleanProps,
   isValidEventName,
@@ -27,12 +34,38 @@ const started = new Date().toISOString();
  * Repeat submissions of the same address merge into the existing row instead of
  * creating a duplicate, so the lead count stays honest.
  */
-function handleSubmit(req, res, body, ctx) {
+async function handleSubmit(req, res, body, ctx) {
   const project = findProject(text(body.project, 64) ?? '');
   if (!project) return send(res, 400, { error: 'unknown project' }, ctx.cors);
 
+  // Bots get a 204: indistinguishable from success, so nothing is learned from
+  // probing, and nothing is stored.
+  if (trippedHoneypot(body) || submittedTooFast(body)) {
+    console.log('[spam] discarded submit');
+    return sendNoContent(res, ctx.cors);
+  }
+
   const email = normaliseEmail(body.email);
   if (!email) return send(res, 422, { error: 'invalid email' }, ctx.cors);
+
+  // Offer the correction rather than storing a dead address. The client shows
+  // it as "did you mean…" and resubmits if the visitor agrees.
+  const fix = suggestDomainFix(email);
+  if (fix) return send(res, 422, { error: 'likely typo', suggestion: fix }, ctx.cors);
+
+  if (!(await domainAcceptsMail(email))) {
+    return send(res, 422, { error: 'domain does not accept mail' }, ctx.cors);
+  }
+
+  const rate = checkRate('submit', ctx.visitor, config.limits.submitsPerHour);
+  if (!rate.allowed) {
+    return send(
+      res,
+      429,
+      { error: 'too many submissions' },
+      { ...ctx.cors, 'retry-after': String(rate.retryAfter) },
+    );
+  }
 
   const props = cleanProps(body.props);
 
@@ -61,6 +94,12 @@ function handleEvent(req, res, body, ctx) {
 
   const name = text(body.name, 64);
   if (!isValidEventName(name)) return sendNoContent(res, ctx.cors);
+
+  // Over the limit we drop the event silently rather than 429 — a rate-limited
+  // tracker should never surface an error into the page.
+  if (!checkRate('event', ctx.visitor, config.limits.eventsPerHour).allowed) {
+    return sendNoContent(res, ctx.cors);
+  }
 
   const utm = body.utm && typeof body.utm === 'object' ? body.utm : {};
 
@@ -132,7 +171,7 @@ const server = createServer(async (req, res) => {
 
     try {
       return url.pathname === '/submit'
-        ? handleSubmit(req, res, body, ctx)
+        ? await handleSubmit(req, res, body, ctx)
         : handleEvent(req, res, body, ctx);
     } catch (err) {
       console.error(`[error] ${url.pathname}:`, err.message);
