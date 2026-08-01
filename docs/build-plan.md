@@ -29,12 +29,18 @@ UTC and never stored. No cookies, no raw IPs → no consent banner under revDSG.
 
 ---
 
-## Phase 0 — prerequisites (MANUAL, blocks phase 5 only)
+## Phase 0 — prerequisites (DONE 2026-08-01)
 
-- [ ] Vladimir creates a free Cloudflare account
-- [ ] Nameservers moved from GoDaddy to Cloudflare (Claude can flip NS via the
-      GoDaddy API once the CF account exists and the zone is added)
-- [ ] Existing records recreated in CF: 4× A apex → GitHub Pages, `www` CNAME
+- [x] Free Cloudflare account created
+- [x] Nameservers moved to `angela`/`remy.ns.cloudflare.com`. Registration
+      stays at GoDaddy. DNSSEC confirmed off first — a DS record would have
+      made the domain unresolvable on switch
+- [x] Records recreated in CF and verified against both Cloudflare nameservers
+      **before** the flip, so there was no window without answers
+- [x] Zero downtime: the site returned 200 throughout
+- [x] Proxy status normalised — the apex had 3 DNS-only A records and 1
+      proxied, which would have sent visitors down different paths depending
+      on which record their resolver picked
 
 > Cloudflare Tunnel public hostnames only work when the zone is on Cloudflare
 > DNS. Everything in phases 1–4 can be built and tested locally without this.
@@ -102,13 +108,26 @@ gunzips, opens, passes `pragma integrity_check` and contains the seeded row.
 
 ## Phase 5 — expose (needs phase 0)
 
-- [ ] `cloudflared` installed, tunnel created, credentials stored
-- [ ] Public hostname `api.kryptodeklara.ch` → `localhost:8787`
-- [ ] Tunnel runs under launchd too
-- [ ] TLS verified end to end
+- [x] `cloudflared` installed (brew), tunnel `deklara-mini` created via API
+- [x] Public hostname `api.kryptodeklara.ch` → `localhost:8787`
+- [x] Tunnel runs under launchd as a **user** agent — `cloudflared service
+      install` would need sudo and create a system daemon; a user agent matches
+      how the API already runs so both start and stop together
+- [x] Tunnel token kept in `~/.cloudflared/deklara-mini.token` (mode 600), read
+      at start time by a wrapper rather than baked into the world-readable plist
+- [x] TLS verified end to end
+- [x] Connected to 4 edges: zrh01, zrh02, ams06, ams17
 
-**Accept:** `curl https://api.kryptodeklara.ch/health` returns 200 from off the
-home network (phone on cellular).
+**Accept:** verified — `https://api.kryptodeklara.ch/health` returns 200 over
+the public internet with a valid cert, a real submit traversed
+Cloudflare → tunnel → Mac mini and landed in SQLite, CORS allows
+`kryptodeklara.ch` and returns 403 for other origins.
+
+> Note: this machine's resolver had cached the NXDOMAIN for `api` from before
+> the record existed, so local `curl` failed while `dig` succeeded. Tests use
+> `--resolve` against the edge IP. Flush with
+> `sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder` if it bites
+> again.
 
 ## Phase 6 — frontend swap
 
