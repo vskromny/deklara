@@ -65,11 +65,14 @@ origin is rejected; duplicate email does not create a second row.
 
 ## Phase 3 — dashboard
 
-- [ ] `GET /admin` — token-gated (bearer in query or header), server-rendered
-- [ ] Shows: visitors, pageviews, signups, conversion rate, per-language split,
+- [x] `GET /admin` — token-gated (bearer in query or header), server-rendered
+- [x] Shows: visitors, pageviews, signups, conversion rate, per-language split,
       top referrers/UTM, `TierChoice` breakdown
-- [ ] `GET /admin/leads.csv` — export the email list
-- [ ] Date range filter (7d / 30d / all)
+- [x] `GET /admin/leads.csv` — export the email list
+- [x] Date range filter (7d / 30d / all)
+- [x] Funnel rates colour-coded against the brief's kill thresholds
+- [x] Token auto-generated on first boot (data/admin-token.txt, mode 600)
+- [x] `test/seed.js` generates demo traffic; 11 more tests (27 total)
 
 **Accept:** dashboard renders real numbers from seeded test data; CSV opens in
 Numbers; no access without the token.

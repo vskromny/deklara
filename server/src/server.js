@@ -1,5 +1,10 @@
 import { createServer } from 'node:http';
+import { randomBytes } from 'node:crypto';
+import { chmodSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { config } from './config.js';
+import { renderDashboard, renderLeadsCsv, tokenMatches } from './admin.js';
+import { resolveRange } from './stats.js';
 import { ensureProject, findProject, getDb } from './db.js';
 import {
   BadJson,
@@ -7,6 +12,7 @@ import {
   corsHeaders,
   readJson,
   send,
+  sendHtml,
   sendNoContent,
 } from './http.js';
 import { clientIp, visitorHash } from './visitor.js';
@@ -27,6 +33,40 @@ import {
 } from './validate.js';
 
 const started = new Date().toISOString();
+
+/**
+ * The dashboard token. Taken from ADMIN_TOKEN when set; otherwise generated
+ * once and kept in the (gitignored) data dir, so a fresh install is protected
+ * by default rather than open until someone remembers to configure it.
+ */
+function loadAdminToken() {
+  if (config.adminToken) return config.adminToken;
+
+  const file = join(dirname(config.dbPath), 'admin-token.txt');
+  try {
+    const existing = readFileSync(file, 'utf8').trim();
+    if (existing) return existing;
+  } catch {}
+
+  const token = randomBytes(24).toString('base64url');
+  mkdirSync(dirname(file), { recursive: true });
+  writeFileSync(file, token + '\n', { mode: 0o600 });
+  chmodSync(file, 0o600);
+  console.log(`[admin] generated token, stored at ${file}`);
+  return token;
+}
+
+const adminToken = loadAdminToken();
+
+/** Token may arrive as ?token= (browser-friendly) or a bearer header. */
+function authorised(req, url) {
+  const header = req.headers.authorization ?? '';
+  const bearer = header.startsWith('Bearer ') ? header.slice(7) : '';
+  return (
+    tokenMatches(url.searchParams.get('token'), adminToken) ||
+    tokenMatches(bearer, adminToken)
+  );
+}
 
 /**
  * POST /submit — a lead. Body: { project, email, props?, hp? }
@@ -145,6 +185,38 @@ const server = createServer(async (req, res) => {
 
   if (req.method === 'GET' && url.pathname === '/health') {
     return handleHealth(res);
+  }
+
+  if (req.method === 'GET' && url.pathname.startsWith('/admin')) {
+    if (!authorised(req, url)) {
+      return send(res, 401, { error: 'unauthorised' }, { 'www-authenticate': 'Bearer' });
+    }
+
+    const project = findProject(url.searchParams.get('project') ?? 'deklara');
+    if (!project) return send(res, 404, { error: 'unknown project' });
+
+    const token = url.searchParams.get('token') ?? '';
+
+    if (url.pathname === '/admin/leads.csv') {
+      const csv = renderLeadsCsv(project.id);
+      res.writeHead(200, {
+        'content-type': 'text/csv; charset=utf-8',
+        'content-disposition': `attachment; filename="${project.key}-leads.csv"`,
+        'content-length': Buffer.byteLength(csv),
+        'cache-control': 'no-store',
+        'referrer-policy': 'no-referrer',
+      });
+      return res.end(csv);
+    }
+
+    if (url.pathname === '/admin') {
+      const range = resolveRange(url.searchParams.get('range') ?? '30d');
+      return sendHtml(res, 200, renderDashboard(project, range, token), {
+        'referrer-policy': 'no-referrer',
+      });
+    }
+
+    return send(res, 404, { error: 'not found' });
   }
 
   if (req.method === 'POST' && (url.pathname === '/submit' || url.pathname === '/event')) {
