@@ -42,6 +42,16 @@ for name in api maintenance; do
   fi
 done
 
+# Enforce the event retention stated in the privacy policy. Leads are kept
+# until launch or withdrawal and are deliberately not touched here.
+RETENTION_DAYS="${EVENT_RETENTION_DAYS:-400}"
+if [ -f "$DB_PATH" ] && [ "$RETENTION_DAYS" -gt 0 ]; then
+  deleted=$(/usr/bin/sqlite3 "$DB_PATH" \
+    "DELETE FROM events WHERE created_at < datetime('now', '-$RETENTION_DAYS days');
+     SELECT changes();")
+  echo "[$(date -Iseconds)] pruned $deleted events older than $RETENTION_DAYS days"
+fi
+
 find "$BACKUP_DIR" -name 'deklara-*.db.gz' -type f -mtime "+$KEEP_DAYS" -delete
 find "$LOG_DIR" -name '*.log.gz' -type f -mtime "+$KEEP_DAYS" -delete
 

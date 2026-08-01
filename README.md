@@ -27,11 +27,12 @@ docs/      — project brief, validation tracker
 ## Launch checklist (do these before/at publishing)
 
 1. ~~**Register domain**~~ — done: `kryptodeklara.ch`, registered at GoDaddy 2026-07-31, expires 2027-07-30, auto-renew on. DNS is managed at GoDaddy (`ns33/ns34.domaincontrol.com`).
-2. **Create a Formspree form** (formspree.io, free tier is fine) and replace `DEIN_FORM_ID` in the `FORM_ENDPOINT` constant at the bottom of **all three** of `web/index.html`, `web/fr/index.html` and `web/en/index.html`. Until then the page runs in *fake-door mode*: it shows the success message locally and only fires analytics (**no email is stored!**).
-3. **Set up Plausible Analytics** (plausible.io) for your domain. The tracking snippet is already in the `<head>` of all three pages (`data-domain="kryptodeklara.ch"`). Goals to create in Plausible: `Signup`, `PreorderClick`, `TierChoice` (custom events, already wired with props: `tier`, `cleanup`, `lang`).
-4. **Fill in the legal placeholders** in `web/impressum.html` and `web/datenschutz.html` (marked with red dashed boxes: name, address, contact email). A Swiss commercial site needs a real imprint.
-5. **Deploy**: the `.github/workflows/pages.yml` workflow publishes `web/` to GitHub Pages on every push to `main`. Alternatively Cloudflare Pages / Netlify with build output directory `web` — those two also honour `_headers`, which GitHub Pages ignores.
-6. **Test the funnel** once live: submit a real email → check it arrives in Formspree; click "Early-Bird sichern" → tier modal → check events in Plausible.
+2. ~~**Lead capture**~~ — done: self-hosted, see `server/`. No Formspree.
+3. ~~**Analytics**~~ — done: self-hosted `web/tracker.js` + `server/`. No Plausible. Events `Signup`, `PreorderClick`, `TierChoice` with props `tier`, `cleanup`, `lang`.
+4. **Expose the API** — `api.kryptodeklara.ch` must resolve to the Mac mini via Cloudflare Tunnel before the live site can store anything. Blocked on a Cloudflare account; see `docs/build-plan.md` phases 0 and 5. **Until this is done the live form fails for every visitor.**
+5. **Fill in the legal placeholders** in `web/impressum.html` and `web/datenschutz.html` (marked with red dashed boxes: name, address, contact email). A Swiss commercial site needs a real imprint.
+6. **Deploy**: the `.github/workflows/pages.yml` workflow publishes `web/` to GitHub Pages on every push to `main`. Note `_headers` is ignored by GitHub Pages (it is a Cloudflare Pages / Netlify file).
+7. **Test the funnel** once live: submit a real email → check it appears at `/admin`; click "Early-Bird sichern" → tier modal → check the events land.
 
 ## Traffic plan (brief §4, step 2)
 

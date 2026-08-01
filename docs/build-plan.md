@@ -142,13 +142,30 @@ the live site cannot reach the API until the tunnel exists.
 
 ## Phase 7 — legal + docs
 
-- [ ] `web/datenschutz.html`: state self-hosted analytics, no cookies, no
-      third-party processor, what's stored, retention, deletion contact
-- [ ] Remove the Plausible/Formspree mentions
-- [ ] `server/README.md`: run, back up, restore, add a new project
-- [ ] Root `README.md` launch checklist updated
+- [x] `web/datenschutz.html`: self-hosted analytics, no cookies, exact field
+      list, daily-salt hashing explained, retention, deletion contact
+- [x] Remove the Plausible/Formspree mentions
+- [x] Processor list corrected: GitHub Pages, Cloudflare (tunnel), Google Fonts
+- [x] Event retention (400 days) actually **implemented** in `maintenance.sh` —
+      it was a config value nothing enforced, so the policy would have stated a
+      retention period the code did not apply
+- [x] `server/README.md`: run, back up, restore, add a new project, gotchas
+- [x] Root `README.md` launch checklist updated
 
-**Accept:** privacy page matches what the code actually does, claim by claim.
+**Accept:** verified claim by claim against the code — no cookie or storage API
+anywhere, no raw-IP column (only `ip_hash`/`visitor_hash`), salt never written
+to disk, query strings stripped from stored paths and referrers, UTM fields
+captured as described, retention enforced nightly.
+
+> **Two gaps worth knowing:**
+>
+> 1. The page now names Cloudflare as a transport processor, which becomes
+>    true at phase 5 and is not yet. Over-disclosure, so harmless, but revisit
+>    if the tunnel plan changes.
+> 2. `datenschutz.html` and `impressum.html` are **German only**, while the site
+>    serves FR and EN. The header says it applies to all three, but a French or
+>    English visitor gets a German legal page. Worth translating before the
+>    campaign drives non-German traffic.
 
 ## Phase 8 — end-to-end
 
