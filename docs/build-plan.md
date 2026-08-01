@@ -169,11 +169,15 @@ captured as described, retention enforced nightly.
 
 ## Phase 8 — end-to-end
 
-- [ ] Real submit from a phone on cellular lands in the DB
-- [ ] Reboot the Mac mini, confirm both services return
-- [ ] Restore a backup into a scratch DB and confirm it opens
-- [ ] Note the known gap: submissions during downtime are lost (accepted risk
-      for the discovery phase)
+- [ ] **BLOCKED (phase 5)** Real submit from a phone on cellular lands in the DB
+      — `api.kryptodeklara.ch` does not resolve until the tunnel exists
+- [ ] **NEEDS YOU** Reboot the Mac mini, confirm both services return. Not done
+      autonomously: rebooting your always-on machine is your call, and the
+      LaunchAgent only restarts once you log back in
+- [x] Restore a backup into a scratch DB and confirm it opens — verified:
+      `integrity_check` ok, all 5 tables present, row counts intact
+- [x] Note the known gap: submissions during downtime are lost (accepted risk
+      for the discovery phase), documented in `server/README.md`
 
 ---
 
