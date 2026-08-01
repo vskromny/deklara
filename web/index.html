@@ -17,9 +17,9 @@
 <meta property="og:url" content="https://kryptodeklara.ch/">
 <meta property="og:locale" content="de_CH">
 <meta name="twitter:card" content="summary">
-<!-- ANALYTICS: set data-domain to your real domain once registered (see README) -->
-<script defer data-domain="kryptodeklara.ch" src="https://plausible.io/js/script.js"></script>
-<script>window.plausible = window.plausible || function(){(window.plausible.q = window.plausible.q || []).push(arguments)}</script>
+<!-- ANALYTICS: self-hosted, cookieless. See server/ and docs/build-plan.md -->
+<script defer src="tracker.js" data-api="https://api.kryptodeklara.ch" data-project="deklara"></script>
+<script>window.track = window.track || function(){(window.track.q = window.track.q || []).push(arguments)}</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -379,6 +379,10 @@
           <input id="email" type="email" name="email" placeholder="deine@email.ch" required autocomplete="email">
           <input type="hidden" name="tier" id="tier-field" value="">
           <input type="hidden" name="lang" value="de">
+          <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">
+            <label for="company">Dieses Feld bitte leer lassen</label>
+            <input id="company" name="company" type="text" tabindex="-1" autocomplete="off">
+          </div>
           <button class="btn" type="submit" id="submit-btn">Frühzugang sichern</button>
         </form>
         <label class="form-extra">
@@ -554,15 +558,11 @@
 </div>
 
 <script>
-  // =====================================================================
-  // CONFIG — set before publishing (see README.md)
-  // 1) FORM_ENDPOINT: your real Formspree/Tally endpoint.
-  //    While it still contains "DEIN_FORM_ID", the page runs in fake-door
-  //    mode: it shows the confirmation locally and only fires analytics.
-  // 2) Plausible: set data-domain in <head> to your registered domain.
-  // =====================================================================
-  const FORM_ENDPOINT = 'https://formspree.io/f/DEIN_FORM_ID';
-  const FAKE_DOOR = FORM_ENDPOINT.includes('DEIN_FORM_ID');
+  // Self-hosted capture + analytics (see server/). No fake-door mode: every
+  // submission is stored, or the visitor is told it failed.
+  const API = 'https://api.kryptodeklara.ch';
+  const FORM_ENDPOINT = API + '/submit';
+  const LOADED_AT = Date.now();
 
   // --- Signature animation: form fills itself ---
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -604,20 +604,41 @@
     if(!email.checkValidity()){ email.reportValidity(); return; }
     const cleanup = document.getElementById('cleanup').checked;
     const tier = document.getElementById('tier-field').value || 'none';
-    plausible('Signup', {props:{tier: tier, cleanup: cleanup ? 'ja' : 'nein', lang: 'de'}});
-
-    if(FAKE_DOOR){ showSuccess(); return; }
+    const props = {tier: tier, cleanup: cleanup ? 'ja' : 'nein', lang: 'de'};
 
     submitBtn.disabled = true;
+    errBox.style.display = 'none';
     try{
       const res = await fetch(FORM_ENDPOINT, {
         method: 'POST',
-        headers: {'Accept': 'application/json'},
-        body: new FormData(form)
+        headers: {'content-type': 'application/json'},
+        body: JSON.stringify({
+          project: 'deklara',
+          email: email.value,
+          props: props,
+          company: document.getElementById('company').value,
+          t: Date.now() - LOADED_AT
+        })
       });
-      if(res.ok){ showSuccess(); }
-      else{ errBox.style.display = 'block'; }
+      if(res.ok){
+        // Only counted once the address is actually stored, so the dashboard
+        // rate reflects real leads rather than attempts.
+        track('Signup', props);
+        showSuccess();
+      } else {
+        let data = {};
+        try{ data = await res.json(); }catch(e){}
+        if(data.suggestion){
+          errBox.textContent = 'Meintest du {s}?'.replace('{s}', data.suggestion);
+          errBox.style.display = 'block';
+          email.value = data.suggestion;
+        } else {
+          errBox.textContent = 'Das hat nicht geklappt — bitte versuch es nochmals.';
+          errBox.style.display = 'block';
+        }
+      }
     }catch(err){
+      errBox.textContent = 'Das hat nicht geklappt — bitte versuch es nochmals.';
       errBox.style.display = 'block';
     }finally{
       submitBtn.disabled = false;
@@ -627,7 +648,7 @@
   // --- Pre-order click = strongest intent signal → tier price test ---
   const modal = document.getElementById('tier-modal');
   document.getElementById('preorder').addEventListener('click', function(){
-    plausible('PreorderClick');
+    track('PreorderClick');
     modal.classList.add('open');
     modal.querySelector('.tier').focus();
   });
@@ -640,7 +661,7 @@
     btn.addEventListener('click', function(){
       const tier = this.dataset.tier;
       document.getElementById('tier-field').value = tier;
-      plausible('TierChoice', {props:{tier: tier}});
+      track('TierChoice', {tier: tier});
       closeModal();
       document.getElementById('signup').scrollIntoView({behavior:'smooth'});
       setTimeout(()=>document.getElementById('email').focus(), 400);

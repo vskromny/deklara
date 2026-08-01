@@ -88,18 +88,23 @@ describe('POST /submit', () => {
     assert.equal(res.status, 400);
   });
 
-  it('silently discards a honeypot hit', async () => {
-    const before = (await (await fetch(`${BASE}/health`)).json()).leads;
-    const res = await post('/submit', {
-      project: 'deklara',
-      email: 'bot@gmail.com',
-      hp: 'i am a bot',
-      t: 5000,
+  // Each honeypot name is checked separately: the live pages use "company",
+  // and a mismatch between the field the page renders and the field the server
+  // inspects silently disables the trap.
+  for (const field of ['hp', 'company', 'website', 'fax']) {
+    it(`silently discards a honeypot hit on "${field}"`, async () => {
+      const before = (await (await fetch(`${BASE}/health`)).json()).leads;
+      const res = await post('/submit', {
+        project: 'deklara',
+        email: `bot-${field}@gmail.com`,
+        [field]: 'i am a bot',
+        t: 5000,
+      });
+      assert.equal(res.status, 204, 'must look like success to the bot');
+      const after = (await (await fetch(`${BASE}/health`)).json()).leads;
+      assert.equal(after, before, 'nothing may be stored');
     });
-    assert.equal(res.status, 204, 'must look like success to the bot');
-    const after = (await (await fetch(`${BASE}/health`)).json()).leads;
-    assert.equal(after, before, 'nothing may be stored');
-  });
+  }
 
   it('silently discards a submit that arrives too fast', async () => {
     const before = (await (await fetch(`${BASE}/health`)).json()).leads;

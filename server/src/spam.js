@@ -9,10 +9,21 @@ import { resolveMx } from 'node:dns/promises';
  * human physically cannot trigger.
  */
 
-/** Bots fill every field they find. Humans never see this one. */
+/**
+ * Bots fill every field they find. Humans never see these.
+ *
+ * Several names are accepted so the visible markup can use something a
+ * scraper finds plausible ("company") without the server having to know which
+ * page it came from. Any of them arriving non-empty means a bot.
+ */
+const HONEYPOT_FIELDS = ['hp', 'company', 'website', 'fax'];
+
 export function trippedHoneypot(body) {
-  const hp = body?.hp;
-  return typeof hp === 'string' && hp.trim().length > 0;
+  if (!body || typeof body !== 'object') return false;
+  return HONEYPOT_FIELDS.some((field) => {
+    const value = body[field];
+    return typeof value === 'string' && value.trim().length > 0;
+  });
 }
 
 /**

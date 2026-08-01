@@ -112,15 +112,33 @@ home network (phone on cellular).
 
 ## Phase 6 — frontend swap
 
-- [ ] `web/tracker.js` — pageview on load + `track(name, props)`, sendBeacon,
+- [x] `web/tracker.js` — pageview on load + `track(name, props)`, sendBeacon,
       same event names: `Signup`, `PreorderClick`, `TierChoice`
-- [ ] Remove the plausible.io script tag from all three locales
-- [ ] Point `FORM_ENDPOINT` at `https://api.kryptodeklara.ch/submit`
-- [ ] Drop `FAKE_DOOR` mode — real storage now
-- [ ] Keep the three locale files byte-identical in their shared blocks
+- [x] Remove the plausible.io script tag from all three locales
+- [x] Point `FORM_ENDPOINT` at `https://api.kryptodeklara.ch/submit`
+- [x] Drop `FAKE_DOOR` mode — real storage now
+- [x] Keep the three locale files byte-identical in their shared blocks
+- [x] Honeypot (`company`) + elapsed-time field wired into the real form
+- [x] Typo suggestions surfaced in the page, per locale
 
-**Accept:** submitting on the live site stores a row; the three events appear
-in the dashboard; no requests to plausible.io remain.
+**Accept:** verified end to end against a local instance — the full funnel
+(Pageview → PreorderClick → TierChoice → Signup) landed with UTM attribution
+intact, and the lead stored with tier/cleanup/lang. No plausible.io,
+FAKE_DOOR or formspree references remain in any locale.
+
+> **Two bugs this phase, both found by testing rather than reading:**
+>
+> 1. `sendBeacon` with an `application/json` Blob is not CORS-safelisted, so it
+>    forces a preflight a beacon cannot perform. Chrome dropped every event
+>    silently while `sendBeacon` still returned `true` — analytics would have
+>    reported zero forever with no error. Now sent as `text/plain`, which is
+>    safelisted; the server parses JSON regardless of declared type.
+> 2. The page rendered the honeypot as `company` while the server only checked
+>    `hp`, so the trap was inert and a bot submission was stored. The server now
+>    checks several names, with a test per name.
+
+**Still blocked on phase 5:** `api.kryptodeklara.ch` does not resolve yet, so
+the live site cannot reach the API until the tunnel exists.
 
 ## Phase 7 — legal + docs
 
