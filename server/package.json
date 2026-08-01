@@ -1,0 +1,19 @@
+{
+  "name": "deklara-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Self-hosted lead capture and analytics for Deklara and future projects",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "start": "node --no-warnings src/server.js",
+    "dev": "node --no-warnings --watch src/server.js",
+    "test": "node --no-warnings --test 'test/**/*.test.js'",
+    "install-service": "bash scripts/install-service.sh",
+    "uninstall-service": "bash scripts/uninstall-service.sh",
+    "backup": "bash scripts/maintenance.sh",
+    "logs": "tail -f logs/api.log"
+  }
+}
