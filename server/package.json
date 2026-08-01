@@ -10,6 +10,10 @@
   "scripts": {
     "start": "node --no-warnings src/server.js",
     "dev": "node --no-warnings --watch src/server.js",
-    "test": "node --no-warnings --test 'test/**/*.test.js'"
+    "test": "node --no-warnings --test 'test/**/*.test.js'",
+    "install-service": "bash scripts/install-service.sh",
+    "uninstall-service": "bash scripts/uninstall-service.sh",
+    "backup": "bash scripts/maintenance.sh",
+    "logs": "tail -f logs/api.log"
   }
 }

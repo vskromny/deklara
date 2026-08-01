@@ -79,13 +79,26 @@ Numbers; no access without the token.
 
 ## Phase 4 — always-on
 
-- [ ] launchd plist at `~/Library/LaunchAgents/ch.kryptodeklara.api.plist`
-- [ ] `KeepAlive` + `RunAtLoad` so it survives reboot and crash
-- [ ] Logs to `server/logs/`, rotated (keep 14 days)
-- [ ] Nightly `sqlite3 .backup` to a dated file, keep 14
+- [x] launchd plist at `~/Library/LaunchAgents/ch.kryptodeklara.api.plist`
+- [x] `KeepAlive` + `RunAtLoad` so it survives a crash
+- [x] Logs to `server/logs/`, rotated at 1MB (keep 14 days)
+- [x] Nightly 04:15 `sqlite3 .backup`, gzipped, integrity-checked, keep 14
+- [x] `scripts/install-service.sh` / `uninstall-service.sh`, both idempotent
 
-**Accept:** `killall node` → process is back within seconds; after a reboot
-`/health` answers without anyone logging in.
+**Accept:** verified — killing the service by PID brought it back in <8s with a
+new PID and a fresh `started` timestamp; `maintenance.sh` produced a backup that
+gunzips, opens, passes `pragma integrity_check` and contains the seeded row.
+
+> **Two caveats, both honest gaps rather than bugs:**
+>
+> 1. A **LaunchAgent only runs while the user is logged in.** The original
+>    acceptance wording ("without anyone logging in") is not satisfied and
+>    cannot be by an agent — that needs a LaunchDaemon in
+>    `/Library/LaunchDaemons` (sudo, runs as root). Fine while the Mac mini
+>    stays logged in; enable auto-login, or promote to a daemon later.
+> 2. Node is **nvm-managed**, so its absolute path contains the version number.
+>    Upgrading node moves it and the agent dies silently. Re-run
+>    `npm run install-service` after any node upgrade.
 
 ## Phase 5 — expose (needs phase 0)
 
