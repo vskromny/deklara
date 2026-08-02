@@ -1,64 +1,77 @@
-# Securing the dashboard
+# Dashboard access
 
-## Where things stand
+## How it is protected now
 
-The tunnel now routes only the collector endpoints publicly:
+`https://api.kryptodeklara.ch/admin` sits behind **Cloudflare Access**.
+Unauthenticated requests are stopped at Cloudflare's edge and never reach the
+Mac mini.
 
-| Path | Public | Why |
+| Path | Public | Protection |
 |---|---|---|
-| `POST /submit` | yes | the live form needs it |
-| `POST /event` | yes | the tracker needs it |
-| `GET /health` | yes | uptime checks |
-| `GET /admin` | **no — 404** | dashboard |
-| `GET /admin/leads.csv` | **no — 404** | the email list |
+| `POST /submit` | yes | CORS allowlist, rate limit, honeypot |
+| `POST /event` | yes | CORS allowlist, rate limit |
+| `GET /health` | yes | none needed |
+| `GET /admin` | via login | **Cloudflare Access** + token |
+| `GET /admin/leads.csv` | via login | **Cloudflare Access** + token |
+| anything else | no | 404 at the edge |
 
-Everything else on `api.kryptodeklara.ch` returns 404 at Cloudflare's edge, so
-it never reaches the Mac mini.
+Two independent layers guard the dashboard: Access must let you in, *and* the
+server still requires its token. Either one alone is enough to keep a stranger
+out.
 
-The dashboard is still reachable **on the machine itself**:
+## Logging in
+
+Open:
+
+```
+https://api.kryptodeklara.ch/admin?token=<token from server/data/admin-token.txt>
+```
+
+Cloudflare asks for your email, sends a one-time code to
+**v.skromny@gmail.com**, and the session lasts 24 hours. Only that address is
+allowed by the policy.
+
+Locally on the Mac mini, no login is required:
 
 ```bash
 open "http://localhost:8787/admin?token=$(cat server/data/admin-token.txt)"
 ```
 
-This closed the real problem: the whole email list sat behind a single
-32-character token, on the open internet, with no rate limit and no lockout —
-and that token is in a chat transcript and browser history.
+## Configuration
 
-## Getting remote access back, with real auth
+- Zero Trust org: `silent-band-422f.cloudflareaccess.com`
+- Access app: `Deklara dashboard` → `api.kryptodeklara.ch/admin`
+- Policy: `Only Vladimir` → allow `v.skromny@gmail.com`
+- Identity: one-time PIN by email (built in, no password anywhere)
+- Session: 24h
 
-Cloudflare Access puts a login in front of `/admin` at the edge, so
-unauthenticated requests never reach the Mac mini at all. Free for up to 50
-users. Supports one-time email codes (no password) or passkeys via Google as
-identity provider.
+## Adding a passkey later
 
-**Access is not enabled on the account yet, and the API cannot enable it** —
-it needs one dashboard action:
+One-time email codes are already passwordless. For true passkeys, add Google
+as an identity provider in Zero Trust → Settings → Authentication, then add it
+to the app's `allowed_idps`. Google accounts support passkeys, so the login
+becomes Touch ID rather than a code in your inbox. No change needed on our
+side.
 
-1. **https://one.dash.cloudflare.com** → pick a team name (e.g. `deklara`).
-   This becomes `deklara.cloudflareaccess.com`, the login domain.
-2. That is all. Tell Claude, and the rest is scripted:
-   - create an Access application scoped to `api.kryptodeklara.ch/admin`
-   - policy: allow only `v.skromny@gmail.com`
-   - identity: one-time PIN by email, or Google for a passkey flow
-   - re-open the `/admin` path in the tunnel, now protected by Access
-   - verify that an unauthenticated request is redirected to login and that
-     `/submit` and `/event` are untouched
+## Adding someone else
 
-**Important ordering:** the Access application must exist *before* the `/admin`
-path is re-opened in the tunnel. Re-opening first would expose the dashboard
-again for the gap in between.
+```bash
+ACC=<account id>; APP=<app id>
+curl -X POST -H "Authorization: Bearer $(cat ~/.cloudflare-token)" \
+  -H "Content-Type: application/json" \
+  "https://api.cloudflare.com/client/v4/accounts/$ACC/access/apps/$APP/policies" \
+  -d '{"name":"Accountant","decision":"allow",
+       "include":[{"email":{"email":"someone@example.ch"}}]}'
+```
 
-## Token permissions needed
+## Ordering rule, if this is ever rebuilt
 
-The current token can manage tunnels and DNS. For the Access step it also
-needs:
-
-- `Account` → `Access: Apps and Policies` → `Edit`
-- `Account` → `Access: Organizations, Identity Providers, and Groups` → `Edit`
+Create the Access application **before** opening the `/admin` path in the
+tunnel. Doing it the other way round exposes the dashboard for the gap in
+between.
 
 ## If you ever drop Cloudflare
 
-The fallback is what is running right now: collector paths public, admin
-local-only. No code change, no data movement — the database never leaves the
-Mac mini in either arrangement.
+Remove the `/admin` ingress rule from the tunnel config. The dashboard becomes
+local-only again, which is where it sat before Access was set up. No code
+change, and the database never leaves the Mac mini in either arrangement.
