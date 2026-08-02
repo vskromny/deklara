@@ -19,4 +19,22 @@
     <xhtml:link rel="alternate" hreflang="fr-CH" href="https://kryptodeklara.ch/fr/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://kryptodeklara.ch/en/"/>
   </url>
+  <url>
+    <loc>https://kryptodeklara.ch/impressum.html</loc>
+  </url>
+  <url>
+    <loc>https://kryptodeklara.ch/datenschutz.html</loc>
+  </url>
+  <url>
+    <loc>https://kryptodeklara.ch/fr/mentions-legales.html</loc>
+  </url>
+  <url>
+    <loc>https://kryptodeklara.ch/fr/confidentialite.html</loc>
+  </url>
+  <url>
+    <loc>https://kryptodeklara.ch/en/legal-notice.html</loc>
+  </url>
+  <url>
+    <loc>https://kryptodeklara.ch/en/privacy.html</loc>
+  </url>
 </urlset>

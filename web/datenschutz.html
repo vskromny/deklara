@@ -15,37 +15,47 @@
   body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);font-size:16px;line-height:1.6}
   .wrap{max-width:760px;margin:0 auto;padding:0 24px}
   header{border-bottom:2px solid var(--line)}
-  .bar{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+  .bar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0}
   .logo{font-family:'Archivo',sans-serif;font-weight:800;font-size:1.25rem;letter-spacing:-0.02em;display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none}
   .cross{width:20px;height:20px;background:var(--red);position:relative;flex:none}
   .cross::before,.cross::after{content:"";position:absolute;background:#fff}
   .cross::before{width:12px;height:4px;left:4px;top:8px}
   .cross::after{width:4px;height:12px;left:8px;top:4px}
+  .lang{font-family:'IBM Plex Mono',monospace;font-size:0.75rem}
+  .lang a{color:var(--grey);text-decoration:none;display:inline-block;padding:6px 2px}
+  .lang a:hover{color:var(--red)}
+  .lang .active{color:var(--ink);font-weight:500}
   main{padding:56px 0 80px}
   h1{font-family:'Archivo',sans-serif;font-weight:800;font-size:2rem;letter-spacing:-0.02em;margin-bottom:12px}
   .stand{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--grey);margin-bottom:32px}
   h2{font-family:'Archivo',sans-serif;font-weight:700;font-size:1.1rem;margin:32px 0 10px}
   p,li{margin-bottom:12px;max-width:44rem}
-  ul{padding-left:22px}
+  ul{margin:0 0 12px 20px}
+  li{margin-bottom:10px}
   address{font-style:normal;background:var(--field);padding:14px 16px;margin:8px 0;line-height:1.7}
   address a{color:var(--red)}
-  ul{margin:0 0 12px 20px}
-  li{margin-bottom:10px;max-width:44rem}
-  footer{border-top:2px solid var(--line);padding:32px 0 48px;font-size:0.8rem;color:var(--grey)}
-  footer a{color:var(--grey)}
+  .small{font-size:0.85rem;color:var(--grey);margin-top:10px}
   a{color:var(--red)}
+  footer{border-top:2px solid var(--line);padding:32px 0 48px;font-size:0.8rem;color:var(--grey)}
+  footer a{color:var(--ink)}
+  @media(max-width:620px){
+    .wrap{padding:0 18px}
+    main{padding:40px 0 56px}
+    h1{font-size:1.6rem}
+  }
 </style>
 </head>
 <body>
 <header>
   <div class="wrap bar">
     <a class="logo" href="./"><span class="cross" aria-hidden="true"></span>Deklara</a>
+    <nav class="lang" aria-label="Sprache"><span class="active">DE</span> · <a href="fr/confidentialite.html" lang="fr">FR</a> · <a href="en/privacy.html" lang="en">EN</a></nav>
   </div>
 </header>
 <main>
   <div class="wrap">
     <h1>Datenschutzerklärung</h1>
-    <p class="stand">Stand: August 2026 · Gilt für kryptodeklara.ch (deutsch, französisch und englisch)</p>
+    <p class="stand">Stand: August 2026</p>
 
     <h2>1. Verantwortliche Stelle</h2>
     <address>
@@ -54,33 +64,18 @@
       8162 Steinmaur, Schweiz<br>
       E-Mail: <a href="mailto:kontakt@kryptodeklara.ch">kontakt@kryptodeklara.ch</a>
     </address>
-    <p>Verantwortlich im Sinne des Schweizer Bundesgesetzes über den Datenschutz (DSG) ist die oben genannte Person. Diese Erklärung gilt für die Website kryptodeklara.ch in allen drei Sprachfassungen (deutsch, französisch, englisch).</p>
-    <p>Soweit Personen in der EU/im EWR die Website nutzen, gelten ergänzend die Bestimmungen der Datenschutz-Grundverordnung (DSGVO). Das Angebot richtet sich an Personen mit Steuerpflicht in der Schweiz.</p>
-
+<p>Verantwortlich im Sinne des Schweizer Bundesgesetzes über den Datenschutz (DSG) ist die oben genannte Person. Diese Erklärung gilt für die Website kryptodeklara.ch in allen drei Sprachfassungen (deutsch, französisch, englisch).</p><p>Soweit Personen in der EU/im EWR die Website nutzen, gelten ergänzend die Bestimmungen der Datenschutz-Grundverordnung (DSGVO). Das Angebot richtet sich an Personen mit Steuerpflicht in der Schweiz.</p>
     <h2>2. Welche Daten wir bearbeiten</h2>
-    <ul>
-      <li><strong>Wartelisten-Anmeldung:</strong> Wenn du dich für den Frühzugang einträgst, bearbeiten wir deine E-Mail-Adresse sowie deine freiwilligen Angaben: gewählte Preisstufe, Interesse an der Nachdeklaration früherer Steuerjahre (Selbstanzeige) und die Sprache der Seite. Die Angabe ist freiwillig; ohne E-Mail-Adresse ist eine Anmeldung technisch nicht möglich.</li>
-      <li><strong>Nutzungsstatistiken:</strong> Wir betreiben unsere Reichweitenmessung selbst, auf eigener Infrastruktur in der Schweiz. Es kommt kein externer Analysedienst zum Einsatz. Pro Aufruf erfassen wir: den aufgerufenen Pfad (ohne Query-Parameter), die Herkunfts-URL (nur Domain und Pfad), die Sprache, allfällige Kampagnen-Parameter (utm_source, utm_medium, utm_campaign) sowie das ausgelöste Ereignis (Seitenaufruf, Anmeldung, Klick auf «Frühzugang», Wahl einer Preisstufe).</li>
-      <li><strong>Keine Cookies, keine Speicherung von IP-Adressen:</strong> Wir setzen keine Cookies und speichern keine IP-Adressen. Um wiederkehrende Aufrufe innerhalb desselben Tages zu erkennen, bilden wir einen nicht umkehrbaren Hashwert aus IP-Adresse, Browserkennung und einem zufälligen Tagesschlüssel. Dieser Schlüssel besteht ausschliesslich im Arbeitsspeicher, wird täglich um 00:00&nbsp;UTC neu erzeugt und nie gespeichert. Die Hashwerte sind dadurch über den Tag hinaus nicht verknüpfbar und lassen sich nicht auf eine bestimmte Person zurückrechnen. Weil weder Cookies gesetzt noch Personendaten auf deinem Gerät gespeichert oder ausgelesen werden, ist für diese Website keine Einwilligung erforderlich.</li>
-      <li><strong>Server-Logdaten der Dienstleister:</strong> Beim Abruf der Website fallen bei unseren Hosting- und Netzwerkdienstleistern technisch bedingte Protokolldaten an (u.&nbsp;a. IP-Adresse, Zeitpunkt, abgerufene Ressource, Browserkennung). Auf diese Daten haben wir keinen direkten Zugriff; sie werden von den Anbietern zur Bereitstellung und Absicherung des Dienstes bearbeitet.</li>
-    </ul>
+    <ul><li><strong>Wartelisten-Anmeldung:</strong> Wenn du dich für den Frühzugang einträgst, bearbeiten wir deine E-Mail-Adresse sowie deine freiwilligen Angaben: gewählte Preisstufe, Interesse an der Nachdeklaration früherer Steuerjahre (Selbstanzeige) und die Sprache der Seite. Die Angabe ist freiwillig; ohne E-Mail-Adresse ist eine Anmeldung technisch nicht möglich.</li><li><strong>Nutzungsstatistiken:</strong> Wir betreiben unsere Reichweitenmessung selbst, auf eigener Infrastruktur in der Schweiz. Es kommt kein externer Analysedienst zum Einsatz. Pro Aufruf erfassen wir: den aufgerufenen Pfad (ohne Query-Parameter), die Herkunfts-URL (nur Domain und Pfad), die Sprache, allfällige Kampagnen-Parameter (utm_source, utm_medium, utm_campaign) sowie das ausgelöste Ereignis (Seitenaufruf, Anmeldung, Klick auf «Frühzugang», Wahl einer Preisstufe).</li><li><strong>Keine Cookies, keine Speicherung von IP-Adressen:</strong> Wir setzen keine Cookies und speichern keine IP-Adressen. Um wiederkehrende Aufrufe innerhalb desselben Tages zu erkennen, bilden wir einen nicht umkehrbaren Hashwert aus IP-Adresse, Browserkennung und einem zufälligen Tagesschlüssel. Dieser Schlüssel besteht ausschliesslich im Arbeitsspeicher, wird täglich um 00:00&nbsp;UTC neu erzeugt und nie gespeichert. Die Hashwerte sind dadurch über den Tag hinaus nicht verknüpfbar und lassen sich nicht auf eine bestimmte Person zurückrechnen. Weil weder Cookies gesetzt noch Personendaten auf deinem Gerät gespeichert oder ausgelesen werden, ist für diese Website keine Einwilligung erforderlich.</li><li><strong>Server-Logdaten der Dienstleister:</strong> Beim Abruf der Website fallen bei unseren Hosting- und Netzwerkdienstleistern technisch bedingte Protokolldaten an (u.&nbsp;a. IP-Adresse, Zeitpunkt, abgerufene Ressource, Browserkennung). Auf diese Daten haben wir keinen direkten Zugriff; sie werden von den Anbietern zur Bereitstellung und Absicherung des Dienstes bearbeitet.</li></ul>
 
     <h2>3. Zweck und Rechtsgrundlage</h2>
-    <p>Deine E-Mail-Adresse verwenden wir ausschliesslich, um dich über den Launch von Deklara und deinen Early-Bird-Zugang zu informieren. Die Nutzungsstatistiken dienen dazu, den Bedarf für das Produkt zu prüfen sowie die Website und ihre Sprachfassungen zu verbessern.</p>
-    <p>Die Bearbeitung erfolgt gestützt auf deine Einwilligung (Eintragung in die Warteliste) sowie auf unser überwiegendes berechtigtes Interesse an einer datensparsamen Reichweitenmessung. Es findet weder ein Verkauf noch eine Weitergabe an Dritte zu Werbezwecken statt. Es werden keine Persönlichkeitsprofile erstellt.</p>
+    <p>Deine E-Mail-Adresse verwenden wir ausschliesslich, um dich über den Launch von Deklara und deinen Early-Bird-Zugang zu informieren. Die Nutzungsstatistiken dienen dazu, den Bedarf für das Produkt zu prüfen sowie die Website und ihre Sprachfassungen zu verbessern.</p><p>Die Bearbeitung erfolgt gestützt auf deine Einwilligung (Eintragung in die Warteliste) sowie auf unser überwiegendes berechtigtes Interesse an einer datensparsamen Reichweitenmessung. Es findet weder ein Verkauf noch eine Weitergabe an Dritte zu Werbezwecken statt. Es werden keine Persönlichkeitsprofile erstellt.</p>
 
     <h2>4. Auftragsbearbeiter und Bekanntgabe ins Ausland</h2>
-    <ul>
-      <li><strong>Formularverarbeitung und Datenhaltung:</strong> Deine Anmeldung wird nicht an einen externen Formulardienst übermittelt. Sie geht direkt an unseren eigenen Server in der Schweiz und wird dort in einer lokalen Datenbank gespeichert.</li>
-      <li><strong>Hosting der Website:</strong> Die statischen Seiten werden über GitHub Pages (GitHub&nbsp;Inc., USA, Microsoft-Konzern) ausgeliefert.</li>
-      <li><strong>Netzwerkzugang:</strong> Die Verbindung zu unserem Server läuft über den Tunnel- und DNS-Dienst von Cloudflare,&nbsp;Inc. (USA). Cloudflare bearbeitet dabei Verbindungsdaten als Transportdienstleister.</li>
-      <li><strong>Schriftarten:</strong> Diese Seite lädt Schriftarten von Google Fonts (Google Ireland&nbsp;Ltd., Irland). Dabei wird deine IP-Adresse an Google übermittelt.</li>
-    </ul>
-    <p>Einzelne dieser Anbieter haben ihren Sitz in den USA. Die Bekanntgabe stützt sich auf die Standardvertragsklauseln der EU-Kommission, anerkannt durch den Eidgenössischen Datenschutz- und Öffentlichkeitsbeauftragten (EDÖB), bzw. auf die Zertifizierung nach dem Swiss&#8209;U.S. Data Privacy Framework. Die eigentlichen Wartelisten- und Statistikdaten verlassen die Schweiz nicht.</p>
+    <ul><li><strong>Formularverarbeitung und Datenhaltung:</strong> Deine Anmeldung wird nicht an einen externen Formulardienst übermittelt. Sie geht direkt an unseren eigenen Server in der Schweiz und wird dort in einer lokalen Datenbank gespeichert.</li><li><strong>Hosting der Website:</strong> Die statischen Seiten werden über GitHub Pages (GitHub&nbsp;Inc., USA, Microsoft-Konzern) ausgeliefert.</li><li><strong>Netzwerkzugang:</strong> Die Verbindung zu unserem Server läuft über den Tunnel- und DNS-Dienst von Cloudflare,&nbsp;Inc. (USA). Cloudflare bearbeitet dabei Verbindungsdaten als Transportdienstleister.</li><li><strong>Schriftarten:</strong> Diese Seite lädt Schriftarten von Google Fonts (Google Ireland&nbsp;Ltd., Irland). Dabei wird deine IP-Adresse an Google übermittelt.</li></ul><p>Einzelne dieser Anbieter haben ihren Sitz in den USA. Die Bekanntgabe stützt sich auf die Standardvertragsklauseln der EU-Kommission bzw. auf die Zertifizierung nach dem Swiss&#8209;U.S. Data Privacy Framework. Die eigentlichen Wartelisten- und Statistikdaten verlassen die Schweiz nicht.</p>
 
     <h2>5. Aufbewahrung und Löschung</h2>
-    <p>Wartelisten-Daten (E-Mail-Adresse und freiwillige Angaben) bewahren wir bis zum Launch bzw. bis zu deinem Widerruf auf. Du kannst dich jederzeit formlos per E-Mail an die oben genannte Adresse abmelden; deine Daten werden dann gelöscht.</p>
-    <p>Die pseudonymen Nutzungsstatistiken werden automatisch nach 400&nbsp;Tagen gelöscht. Sicherungskopien der Datenbank werden 14&nbsp;Tage aufbewahrt und danach ebenfalls gelöscht. Nach einer Löschung auf deinen Wunsch hin können deine Daten daher noch bis zu 14&nbsp;Tage in Sicherungskopien enthalten sein.</p>
+    <p>Wartelisten-Daten (E-Mail-Adresse und freiwillige Angaben) bewahren wir bis zum Launch bzw. bis zu deinem Widerruf auf. Du kannst dich jederzeit formlos per E-Mail an die oben genannte Adresse abmelden; deine Daten werden dann gelöscht.</p><p>Die pseudonymen Nutzungsstatistiken werden automatisch nach 400&nbsp;Tagen gelöscht. Sicherungskopien der Datenbank werden 14&nbsp;Tage aufbewahrt und danach ebenfalls gelöscht. Nach einer Löschung auf deinen Wunsch hin können deine Daten daher noch bis zu 14&nbsp;Tage in Sicherungskopien enthalten sein.</p>
 
     <h2>6. Datensicherheit</h2>
     <p>Die Übertragung erfolgt ausschliesslich verschlüsselt (TLS/HTTPS). Die Datenbank liegt auf einem Server in der Schweiz, der nicht direkt aus dem Internet erreichbar ist, sondern nur über eine ausgehende, authentifizierte Tunnelverbindung. Der Zugriff auf die gespeicherten Daten ist auf die verantwortliche Person beschränkt und durch ein Zugangstoken geschützt. Wir bearbeiten nur die Daten, die für den genannten Zweck erforderlich sind.</p>
@@ -89,12 +84,11 @@
     <p>Es findet keine automatisierte Einzelentscheidung im Sinne von Art.&nbsp;21&nbsp;DSG statt, die für dich mit einer Rechtsfolge verbunden wäre oder dich erheblich beeinträchtigen würde.</p>
 
     <h2>8. Deine Rechte</h2>
-    <p>Du hast im Rahmen des anwendbaren Rechts insbesondere das Recht auf Auskunft über die zu deiner Person bearbeiteten Daten, auf Berichtigung unrichtiger Daten, auf Löschung oder Vernichtung, auf Herausgabe oder Übertragung deiner Daten (Datenportabilität) sowie das Recht, gegen die Bearbeitung Widerspruch zu erheben oder eine erteilte Einwilligung jederzeit zu widerrufen. Der Widerruf gilt ab dem Zeitpunkt der Erklärung und berührt die Rechtmässigkeit der bis dahin erfolgten Bearbeitung nicht.</p>
-    <p>Wende dich dazu an die oben genannte Kontaktadresse. Zur Bearbeitung deines Anliegens kann eine Identifikation nötig sein.</p>
-    <p>Du hast zudem das Recht, dich beim <strong>Eidgenössischen Datenschutz- und Öffentlichkeitsbeauftragten (EDÖB)</strong>, Feldeggweg&nbsp;1, 3003&nbsp;Bern, zu beschweren. Personen mit Wohnsitz in der EU/im EWR können sich an die für sie zuständige Datenschutz-Aufsichtsbehörde wenden.</p>
+    <p>Du hast im Rahmen des anwendbaren Rechts insbesondere das Recht auf Auskunft über die zu deiner Person bearbeiteten Daten, auf Berichtigung unrichtiger Daten, auf Löschung oder Vernichtung, auf Herausgabe oder Übertragung deiner Daten (Datenportabilität) sowie das Recht, gegen die Bearbeitung Widerspruch zu erheben oder eine erteilte Einwilligung jederzeit zu widerrufen. Der Widerruf gilt ab dem Zeitpunkt der Erklärung und berührt die Rechtmässigkeit der bis dahin erfolgten Bearbeitung nicht.</p><p>Wende dich dazu an die oben genannte Kontaktadresse. Zur Bearbeitung deines Anliegens kann eine Identifikation nötig sein.</p><p>Du hast zudem das Recht, dich beim <strong>Eidgenössischen Datenschutz- und Öffentlichkeitsbeauftragten (EDÖB)</strong>, Feldeggweg&nbsp;1, 3003&nbsp;Bern, zu beschweren. Personen mit Wohnsitz in der EU/im EWR können sich an die für sie zuständige Datenschutz-Aufsichtsbehörde wenden.</p>
 
     <h2>9. Änderungen</h2>
     <p>Wir können diese Datenschutzerklärung bei Bedarf anpassen. Es gilt die jeweils auf dieser Seite veröffentlichte Fassung.</p>
+
   </div>
 </main>
 <footer>
